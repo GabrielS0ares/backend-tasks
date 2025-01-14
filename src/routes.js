@@ -9,7 +9,19 @@ export const routes = [
         method: 'GET',
         path: buildRoutePath('/tasks'),
         handler: (req, res) => {
-            const tasks = database.select('tasks')
+            let tasks = database.select('tasks')
+
+            const { query } = req 
+
+            console.log(query)
+
+            if(query){
+                tasks = tasks.filter(row => {
+                    return Object.entries(query).some(([key, value]) => {
+                        return row[key].toLowerCase().includes(value.toLowerCase())
+                    })
+                })
+            }
 
             return res.end(JSON.stringify(tasks))
         }
