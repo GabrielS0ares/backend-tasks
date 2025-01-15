@@ -5,6 +5,7 @@ import { SnowflakeID } from "./utilities/snowflakeID.js"
 const database = new Database()
 
 export const routes = [
+    // GET
     {
         method: 'GET',
         path: buildRoutePath('/tasks'),
@@ -24,6 +25,7 @@ export const routes = [
             return res.end(JSON.stringify(tasks))
         }
     },
+    // POST
     {
         method: 'POST',
         path: buildRoutePath('/tasks'),
@@ -65,6 +67,7 @@ export const routes = [
             return res.writeHead(500).end("Ops... tivemos um problema")
         }
     },
+    //PATCH
     {
         method: 'PATCH',
         path: buildRoutePath('/tasks/:id'),
@@ -97,6 +100,24 @@ export const routes = [
                 }
             }
             return res.writeHead(404).end(JSON.stringify({ message: `ID: ${id} não encontrado` }))
+        }
+    },
+    //DELETE
+    {
+        method: 'DELETE',
+        path: buildRoutePath('/tasks/:id'),
+        handler: (req, res) => {
+
+            const { id } = req.params
+
+            const deleteTask = database.delete('tasks', id)
+            
+            if(deleteTask.success){
+                return res.writeHead(204).end()
+            }
+
+            return res.writeHead(404).end(JSON.stringify({message: `ID: ${id} não encontrado`}))
+
         }
     }
 ]
