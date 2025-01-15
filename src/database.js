@@ -41,4 +41,41 @@ export class Database {
             return { success: false }
         }
     }
+
+    parcialUpdade(table, data, id) {
+
+        const rowIndex = this.#database[table].findIndex(row => row.id === id)
+
+        if (rowIndex > -1) {
+
+
+            const task = this.#database[table][rowIndex]
+
+            const updateKeys = Object.keys(data)
+
+            let updateTask = { ...task }
+
+            updateKeys.forEach(key => {
+                if (key == "completed_at") {
+                    updateTask[key] = data[key] ? true : null
+                    return
+                }
+                if (data[key]) {
+                    updateTask[key] = data[key]
+                    return
+                }
+            })
+
+            this.#database[table][rowIndex] = updateTask
+
+            this.#persist()
+
+            return { success: true }
+        }
+        else {
+            return { success: false }
+        }
+
+
+    }
 }
