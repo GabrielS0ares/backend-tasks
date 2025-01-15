@@ -48,21 +48,23 @@ export class Database {
 
         if (rowIndex > -1) {
 
-
             const task = this.#database[table][rowIndex]
 
+            const allowedKeys = Object.keys(task)
             const updateKeys = Object.keys(data)
 
             let updateTask = { ...task }
 
             updateKeys.forEach(key => {
-                if (key == "completed_at") {
-                    updateTask[key] = data[key] ? true : null
-                    return
-                }
-                if (data[key]) {
-                    updateTask[key] = data[key]
-                    return
+                if (allowedKeys.includes(key)) {
+                    if (key == "completed_at") {
+                        updateTask[key] = data[key] ? true : null
+                        return
+                    }
+                    if (data[key]) {
+                        updateTask[key] = data[key]
+                        return
+                    }
                 }
             })
 
