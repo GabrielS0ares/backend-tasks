@@ -13,6 +13,7 @@ export const routes = [
             let tasks = database.select('tasks')
 
             const { query } = req
+            console.log("query", query)
 
             if (query) {
                 tasks = tasks.filter(row => {
@@ -34,10 +35,14 @@ export const routes = [
             const { title, description } = req.body
 
             if (!title) {
-                return res.end("campo title ausente")
+                return res.writeHead(400).end(JSON.stringify({
+                    response : "campo title ausente"
+                }))
             }
             if (!description) {
-                return res.end("campo description ausente")
+                return res.writeHead(400).end(JSON.stringify({
+                    response : "campo description ausente"
+                }))
             }
 
             const snowflake = new SnowflakeID();
@@ -58,7 +63,7 @@ export const routes = [
             const createTask = database.insert('tasks', task)
 
             if (createTask.success) {
-                return res.writeHead(201).end(JSON.stringify({
+                return res.writeHead(500).end(JSON.stringify({
                     message: "Task criada com sucesso",
                     id: idTask
                 }))

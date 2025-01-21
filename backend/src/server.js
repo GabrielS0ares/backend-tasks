@@ -4,7 +4,8 @@ import { routes } from './routes.js'
 import { extractQueryParams } from './utilities/extract-query-params.js'
 
 const server = http.createServer( async (req, res) => {
-    
+
+
     const {method, url} = req
 
     await json(req, res)
@@ -27,6 +28,7 @@ const server = http.createServer( async (req, res) => {
     res.writeHead(404).end(JSON.stringify({message: "Não tem nada aqui ( ͡❛ ͜ʖ ͡❛)"}));
 
 })
+
 
 server.listen(9000, 'localhost', () => {
     console.log('Server on')
